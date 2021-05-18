@@ -37,7 +37,7 @@ export default class Scanner extends EventEmitter {
         const info = await NetInfo.fetch();
         const address = info.details.ipAddress.match(/\d+/g).map((item) => parseInt(item, 10));
         const bits = Scanner.bits(info.details.subnet);
-        const mask = info.details.subnet.match(/\d+/g).map((item) => parseInt(item, 10));
+        const mask = info.details.subnet.match(/\d+/g).map((item, index) => index === 3 ? 0 : parseInt(item, 10));
         const network = address.map((item, index) => item & mask[index]);
         const broadcast = address.map((item, index) => item | (~ mask[index] & 0xff));
 
