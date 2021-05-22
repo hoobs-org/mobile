@@ -2,7 +2,35 @@ import EventEmitter from "events";
 import NetInfo from "@react-native-community/netinfo";
 import { ip } from "./formatters";
 
+interface Subnet {
+    count: number;
+    start?: number;
+    end?: number;
+    address: string;
+    network: string;
+    broadcast: string;
+    cidr: string;
+}
+
+interface Active {
+    ip: string;
+    port: number;
+    application: string;
+    version: string;
+    mac?: string;
+}
+
 export default class Scanner extends EventEmitter {
+    declare stopped: boolean;
+
+    declare total: number;
+
+    declare count: number;
+
+    declare errors: number;
+
+    declare timeout: number;
+
     constructor() {
         super();
 
@@ -15,7 +43,7 @@ export default class Scanner extends EventEmitter {
         this.timeout = 5 * 1000;
     }
 
-    async start(devices, ...ports) {
+    async start(devices: Active[], ...ports: number[]): Promise<void> {
         if (this.stopped) {
             this.stopped = false;
 
@@ -33,11 +61,12 @@ export default class Scanner extends EventEmitter {
         }
     }
 
-    async subnet() {
-        const info = await NetInfo.fetch();
-        const address = info.details.ipAddress.match(/\d+/g).map((item) => parseInt(item, 10));
-        const bits = Scanner.bits(info.details.subnet);
-        const mask = info.details.subnet.match(/\d+/g).map((item, index) => index === 3 ? 0 : parseInt(item, 10));
+    async subnet(): Promise<Subnet> {
+        const info = await NetInfo.fetch("wifi");
+        const details: any | undefined = info.details;
+        const address: number[] = (details?.ipAddress || "").match(/\d+/g).map((item: string) => parseInt(item, 10));
+        const bits = Scanner.bits(details?.subnet);
+        const mask = details?.subnet.match(/\d+/g).map((item: string, index: number) => index === 3 ? 0 : parseInt(item, 10));
         const network = address.map((item, index) => item & mask[index]);
         const broadcast = address.map((item, index) => item | (~ mask[index] & 0xff));
 
@@ -57,16 +86,8 @@ export default class Scanner extends EventEmitter {
         this.emit("stop");
     }
 
-    install(vue) {
-        vue.mixin({
-            computed: {
-                $scanner: () => this,
-            },
-        });
-    }
-
-    static bits(subnet) {
-        const nodes = subnet.match(/(\d+)/g);
+    static bits(subnet: string) {
+        const nodes: number[] = (subnet.match(/(\d+)/g) || []).map((item: any) => parseInt(item, 10));
 
         let cidr = 0;
 

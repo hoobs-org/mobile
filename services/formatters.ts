@@ -1,4 +1,4 @@
-export function units(value) {
+export function units(value: number): { [key: string]: number | string } {
     const results = {
         value: Math.round((value / 1073741824) * 100) / 100,
         units: "GB",
@@ -25,7 +25,7 @@ export function units(value) {
     return results;
 }
 
-export function timespan(value) {
+export function timespan(value: number): { [key: string]: number } {
     const results = {
         days: 0,
         hours: 0,
@@ -46,7 +46,7 @@ export function timespan(value) {
     return results;
 }
 
-export function mac() {
+export function mac(): string {
     let value = "";
 
     for (let i = 0; i < 6; i += 1) {
@@ -61,21 +61,21 @@ export function mac() {
 }
 
 export class ip {
-    static expand(value) {
+    static expand(value: string) {
         if (value.match(/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/)) {  
-            const parts = value.split(".");
+            const parts: number[] = value.split(".").map((item: string) => parseInt(item, 10));
 
             return (parts[0] * 16777216 + (parts[1] * 65536) + (parts[2] * 256) + (parts[3] * 1 ));
         }  
-       
+
         return undefined;
     }
 
-    static format(value) {
+    static format(value: number) {
         if (!isNaN(value) && (value >= 0 || value <= 4294967295)) {
             return `${Math.floor(value / Math.pow(256, 3))}.${Math.floor((value % Math.pow(256, 3)) / Math.pow(256, 2))}.${Math.floor(((value % Math.pow(256, 3)) % Math.pow(256, 2)) / Math.pow(256, 1))}.${Math.floor((((value % Math.pow(256, 3)) % Math.pow(256, 2)) % Math.pow(256, 1)) / Math.pow(256, 0))}`;
         }
-    
+
         return undefined;
     }
 }
