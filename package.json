@@ -5,6 +5,8 @@
         "eject": "expo eject"
     },
     "dependencies": {
+        "@react-native-community/netinfo": "^6.0.0",
+        "events": "^3.3.0",
         "expo": "~41.0.1",
         "expo-status-bar": "~1.0.4",
         "react": "16.13.1",

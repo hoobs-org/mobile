@@ -5,7 +5,7 @@ export default function App() {
     return (
         <View style={styles.container}>
             <StatusBar barStyle="light-content" />
-            <Text style={styles.text}>Open up app.tsx to start working on your app!</Text>
+            <Text style={styles.text}>HOOBS</Text>
         </View>
     );
 }
