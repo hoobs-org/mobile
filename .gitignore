@@ -9,5 +9,3 @@ npm-debug.*
 web-build/
 .DS_Store
 .expo
-.expo-shared
-*expo
