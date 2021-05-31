@@ -59,6 +59,11 @@ In order to build and emulate both the iOS and Android app. You need to install 
     source ~/.bash_profile
     ```
 
+11. Install Cordova.
+    ```sh
+    sudo npm install -g cordova
+    ```
+
 ## Building
 This project has a tool chain. To build simply run this command frmo the project root.
 
