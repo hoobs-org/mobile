@@ -5,8 +5,8 @@
     "author": "mkellsy <mkellsy@gmail.com>",
     "private": true,
     "scripts": {
-        "debug": "scripts emulate --lint",
-        "build": "scripts build --lint"
+        "debug": "./scripts emulate --lint",
+        "build": "./scripts build --lint"
     },
     "dependencies": {
         "cordova-android": "9.1.0",

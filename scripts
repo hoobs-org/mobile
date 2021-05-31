@@ -11,6 +11,16 @@ const pjson = JSON.parse(readFileSync(join(root, "package.json")).toString());
 
 const prompt = Inquirer.createPromptModule();
 
+function exec(command, options) {
+    options = options || {};
+    options.cwd = options.cwd || root;
+    options.stdio = options.stdio || "inherit";
+
+    try {
+        execSync(command, options);
+    } catch (_error) { }
+}
+
 Program.version(pjson.version, "-v, --version", "output the current version")
     .allowUnknownOption();
 
@@ -32,17 +42,17 @@ Program.command("build")
 
         switch (platform) {
             case "android":
-                if (command.lint) execSync(`${join(root, "node_modules", ".bin", "eslint")} --ext .js,.vue src`, { cwd: root, stdio: "inherit" });
+                if (command.lint) exec(`${join(root, "node_modules", ".bin", "eslint")} --ext .js,.vue src`);
 
-                execSync(`node ${join(root, "build", "build.js")}`, { cwd: root, stdio: "inherit" });
-                execSync("cordova build android", { cwd: root, stdio: "inherit" });
+                exec(`node ${join(root, "build", "build.js")}`);
+                exec("cordova build android");
                 break;
 
             case "ios":
-                if (command.lint) execSync(`${join(root, "node_modules", ".bin", "eslint")} --ext .js,.vue src`, { cwd: root, stdio: "inherit" });
+                if (command.lint) exec(`${join(root, "node_modules", ".bin", "eslint")} --ext .js,.vue src`);
 
-                execSync(`node ${join(root, "build", "build.js")}`, { cwd: root, stdio: "inherit" });
-                execSync("cordova build ios", { cwd: root, stdio: "inherit" });
+                exec(`node ${join(root, "build", "build.js")}`);
+                exec("cordova build ios");
                 break;
 
             default:
@@ -73,25 +83,25 @@ Program.command("emulate")
 
         switch (platform) {
             case "android":
-                if (command.lint) execSync(`${join(root, "node_modules", ".bin", "eslint")} --ext .js,.vue src`, { cwd: root, stdio: "inherit" });
+                if (command.lint) exec(`${join(root, "node_modules", ".bin", "eslint")} --ext .js,.vue src`);
 
-                execSync(`node ${join(root, "build", "build.js")}`, { cwd: root, stdio: "inherit" });
-                execSync("cordova build android", { cwd: root, stdio: "inherit" });
-                execSync("cordova run android", { cwd: root, stdio: "inherit" });
+                exec(`node ${join(root, "build", "build.js")}`);
+                exec("cordova build android");
+                exec("cordova run android");
                 break;
 
             case "ios":
-                if (command.lint) execSync(`${join(root, "node_modules", ".bin", "eslint")} --ext .js,.vue src`, { cwd: root, stdio: "inherit" });
+                if (command.lint) exec(`${join(root, "node_modules", ".bin", "eslint")} --ext .js,.vue src`);
 
-                execSync(`node ${join(root, "build", "build.js")}`, { cwd: root, stdio: "inherit" });
-                execSync("cordova build ios", { cwd: root, stdio: "inherit" });
-                execSync("cordova run ios", { cwd: root, stdio: "inherit" });
+                exec(`node ${join(root, "build", "build.js")}`);
+                exec("cordova build ios");
+                exec("cordova run ios");
                 break;
 
             case "browser":
-                if (command.lint) execSync(`${join(root, "node_modules", ".bin", "eslint")} --ext .js,.vue src`, { cwd: root, stdio: "inherit" });
+                if (command.lint) exec(`${join(root, "node_modules", ".bin", "eslint")} --ext .js,.vue src`);
 
-                execSync(`${join(root, "node_modules", ".bin", "webpack-dev-server")} --inline --progress --config ${join(root, "build", "webpack.dev.conf.js")}`, { cwd: root, stdio: "inherit" });
+                exec(`${join(root, "node_modules", ".bin", "webpack-dev-server")} --inline --progress --config ${join(root, "build", "webpack.dev.conf.js")}`);
                 break;
 
             default:

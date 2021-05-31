@@ -64,6 +64,13 @@ In order to build and emulate both the iOS and Android app. You need to install 
     sudo npm install -g cordova
     ```
 
+12. Add supported platforms. This needs to be ran from the project root.
+    ```sh
+    cd ~/HOOBS/mobile
+    cordova platform add android
+    cordova platform add ios
+    ```
+
 ## Building
 This project has a tool chain. To build simply run this command frmo the project root.
 
