@@ -53,8 +53,10 @@ module.exports = {
         "import/no-extraneous-dependencies": ["error", {
             optionalDependencies: ["test/unit/index.js"],
         }],
+        "arrow-parens": ["error", "always"],
         "no-new": "off",
         "spaced-comment": "off",
+        "import/extensions": "off",
         "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
         "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
     },
